@@ -9,6 +9,8 @@ export interface Product {
     price: number
     thumbnail_path: string | null
     ratings: number | null
+    createdAt?: string
+    addedBy?: number
 }
 
 interface FetchProductsResponse {

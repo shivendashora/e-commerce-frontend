@@ -17,7 +17,7 @@ export default function Navbar(){
     }
 
     return(
-        <nav className="bg-red-600 text-white w-full h-[64px] px-8 flex items-center justify-between shadow-md">
+        <nav className="sticky top-0 z-30 bg-red-600 text-white w-full h-[64px] px-8 flex items-center justify-between shadow-md">
             <span className="font-bold text-[22px]">
                 E-Shop
             </span>

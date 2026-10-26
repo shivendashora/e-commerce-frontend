@@ -104,7 +104,7 @@ export default function ListProduct(){
                         </section>
                     </div>
 
-                    <section className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 flex flex-col gap-4 lg:sticky lg:top-6">
+                    <section className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 flex flex-col gap-4 lg:sticky lg:top-[88px]">
                         <div>
                             <h2 className="font-semibold text-[18px]">
                                 Product image <span className="text-red-600">*</span>
