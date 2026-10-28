@@ -33,7 +33,7 @@ export default function Home(){
     }, [debouncedSearch])
 
     return(
-        <div className="min-h-[calc(100vh-64px)] bg-gray-50">
+        <div className="min-h-[calc(100vh-64px)] overflow-hidden bg-gray-50">
             <div className="px-8 pt-8 flex items-center justify-between gap-4">
                 <h1 className="text-red-600 font-bold text-[30px]">
                     Products

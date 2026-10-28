@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom"
 import { logout } from "../../api/auth"
+import { useCart } from "../../../context/cart-context"
 
 const links = [
     { to: "/home", label: "Home" },
@@ -10,9 +11,11 @@ const links = [
 
 export default function Navbar(){
     const navigate = useNavigate()
+    const { itemCount, clearCart } = useCart()
 
     function handleLogout(){
         logout()
+        clearCart()
         navigate("/", { replace: true })
     }
 
@@ -34,6 +37,25 @@ export default function Navbar(){
                         {link.label}
                     </NavLink>
                 ))}
+
+                <NavLink
+                    to="/cart"
+                    className={({isActive})=>
+                        `relative flex items-center gap-1 font-medium hover:opacity-80 ${isActive ? "underline underline-offset-8 decoration-2" : ""}`
+                    }
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+                        <circle cx="9" cy="20" r="1.5"/>
+                        <circle cx="18" cy="20" r="1.5"/>
+                        <path d="M2 3h3l2.4 11.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 7H6"/>
+                    </svg>
+                    Cart
+                    {itemCount > 0 && (
+                        <span className="absolute -top-2 left-3 min-w-[18px] h-[18px] px-1 rounded-full bg-white text-red-600 text-[11px] font-bold flex items-center justify-center">
+                            {itemCount}
+                        </span>
+                    )}
+                </NavLink>
 
                 <button
                     type="button"

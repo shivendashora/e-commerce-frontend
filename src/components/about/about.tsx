@@ -44,7 +44,7 @@ const points: { title: string, text: string, icon: ReactNode }[] = [
 
 export default function About(){
     return(
-        <div className="min-h-[calc(100vh-64px)] bg-gray-50 px-8 py-8 flex flex-col gap-8">
+        <div className="min-h-[calc(100vh-64px)] overflow-hidden bg-gray-50 px-8 py-8 flex flex-col gap-8">
 
             <section className="bg-white rounded-[24px] border border-gray-200 p-8 md:p-10 grid md:grid-cols-[1.3fr_1fr] gap-8 items-center">
                 <div>

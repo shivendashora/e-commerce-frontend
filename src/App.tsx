@@ -6,6 +6,7 @@ import Auth from './components/Auth/auth'
 import About from './components/about/about'
 import Contacts from './components/contacts/contacts'
 import ListProduct from './components/list-product/list-product'
+import Cart from './components/cart/cart'
 import ProtectedLayout from './components/layout/protected-layout'
 import LoadingContext from './components/layout/main-layout'
 import { getToken } from './api/cookies'
@@ -23,6 +24,7 @@ export default function App() {
             <Route path='/contacts' element={<Contacts />} />
             <Route path='/list-product' element={<ListProduct />} />
             <Route path='/product/:id' element={<Product />} />
+            <Route path='/cart' element={<Cart />} />
           </Route>
 
         </Route>

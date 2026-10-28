@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { fetchProductById, type Product as ProductType } from "../../api/products"
 import { useLoading } from "../../../context/loading-context"
+import { useCart } from "../../../context/cart-context"
 
 function ImagePlaceholder(){
     return(
@@ -41,6 +42,8 @@ function ProductPage(){
     const productId = Number(id)
     const location = useLocation()
     const { updateLoadingState } = useLoading()
+    const { addToCart } = useCart()
+    const navigate = useNavigate()
 
     // the card passes the product it was showing, so the page opens instantly;
     // on a refresh or a direct link it is fetched instead
@@ -51,7 +54,7 @@ function ProductPage(){
     const [failed, setFailed] = useState<string[]>([])
     const [viewerOpen, setViewerOpen] = useState(false)
     const [quantity, setQuantity] = useState(1)
-    const [notice, setNotice] = useState("")
+    const [added, setAdded] = useState(false)
 
     useEffect(()=>{
         window.scrollTo(0, 0)
@@ -72,14 +75,17 @@ function ProductPage(){
         return ()=>window.removeEventListener("keydown", onKey)
     }, [viewerOpen])
 
-    // TODO: connect to the cart API
     function handleAddToCart(){
-        setNotice("Add to Cart is coming soon.")
+        if (!product) return
+        addToCart(product, quantity)
+        setAdded(true)
     }
 
-    // TODO: connect to the payment API (/trigger-payment)
+    // Amazon style: put the item in the cart and go straight to it
     function handleBuyNow(){
-        setNotice("Buy Now is coming soon.")
+        if (!product) return
+        addToCart(product, quantity)
+        navigate("/cart")
     }
 
     if (error) {
@@ -103,7 +109,7 @@ function ProductPage(){
         )
     }
 
-    if (!product) return <div className="min-h-[calc(100vh-64px)] bg-gray-50"/>
+    if (!product) return <div className="min-h-[calc(100vh-64px)] overflow-hidden bg-gray-50"/>
 
     // only one image per product today; the gallery takes a list so more can be added later
     const images = [product.thumbnail_path].filter((src): src is string => !!src && !failed.includes(src))
@@ -113,7 +119,7 @@ function ProductPage(){
         : null
 
     return(
-        <div className="min-h-[calc(100vh-64px)] bg-gray-50">
+        <div className="min-h-[calc(100vh-64px)] overflow-hidden bg-gray-50">
             <div className="w-full px-4 md:px-8 py-6 text-gray-800">
 
                 <nav className="text-sm text-gray-500 mb-4 truncate">
@@ -166,7 +172,11 @@ function ProductPage(){
                                     Buy Now
                                 </button>
                             </div>
-                            {notice && <p className="text-sm text-gray-600 text-center">{notice}</p>}
+                            {added && (
+                                <p className="text-sm text-gray-600 text-center">
+                                    Added to cart. <Link to="/cart" className="text-red-600 font-semibold">Go to Cart</Link>
+                                </p>
+                            )}
                         </div>
                     </div>
 
