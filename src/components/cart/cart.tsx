@@ -87,7 +87,7 @@ export default function Cart() {
         setPaying(true)
         setPaymentError("")
         try {
-            await payWithRazorpay(items[0].product.id, itemCount)
+            await payWithRazorpay(items)
             setPlacedOrder({ items, itemCount, total: subtotal })
             clearCart()
         } catch (err) {

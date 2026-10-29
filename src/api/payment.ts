@@ -1,3 +1,4 @@
+import type { CartItem } from '../../context/cart-context'
 import { apiFetch } from './client'
 
 // response of POST /trigger-payment; amount is in paise
@@ -40,11 +41,17 @@ declare global {
     }
 }
 
-export function createPaymentOrder(productId: number, quantity: number) {
+// one entry per cart item, the backend prices the whole order
+export interface CheckoutProduct {
+    product_id: number
+    quantity: number
+}
+
+export function createPaymentOrder(products: CheckoutProduct[]) {
     return apiFetch<RazorpayOrder>('/trigger-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id: productId, quantity }),
+        body: JSON.stringify({PaymentRequest : products}),
     })
 }
 
@@ -61,10 +68,10 @@ export function verifyPayment(response: RazorpaySuccessResponse) {
     })
 }
 
-export async function payWithRazorpay(productId: number, quantity: number): Promise<void> {
+export async function payWithRazorpay(items: CartItem[]): Promise<void> {
     const Razorpay = window.Razorpay
     if (!Razorpay) throw new Error('Razorpay failed to load. Check your internet connection.')
-    const order = await createPaymentOrder(productId, quantity)
+    const order = await createPaymentOrder(items.map((item) => ({ product_id: item.product.id, quantity: item.quantity })))
 
     return new Promise((resolve, reject) => {
         const razorpay = new Razorpay({
